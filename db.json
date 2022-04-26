@@ -1,0 +1,38 @@
+{
+  "posts": [
+    {
+      "userId": 1,
+      "id": 1,
+      "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+      "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+    },
+    {
+      "userID": 10,
+      "title": "Angular",
+      "body": "Angular is framework of javascript",
+      "id": 2
+    },
+    {
+      "userID": 4,
+      "title": "JavaScript",
+      "body": "JavaScript is Object Oriented programing lang",
+      "id": 4
+    },
+    {
+      "userID": 10,
+      "title": "HTML",
+      "body": "It is used to create Static web pages",
+      "id": 5
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
