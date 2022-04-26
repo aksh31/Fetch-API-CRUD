@@ -11,34 +11,45 @@ const update = document.getElementById('update');
 
 let postArray = [];
 
-// function makeFetchAPICall(methodName, url, body){
-//     return fetch(url, {
-//         method : methodName,
-//         body : body,
-//         headers : {
-//             'content-type' : "application/json; charset=UTF-8",
-//             'authorization' : "Bearar Token qwertyqaz"
-//         }
-//     }).then(response => response.json());
-// }
+// ===============================Common Function For All methods============================= //
 
-async function makeFetchAPICall(methodName, url, body){
-    const response = await fetch(url, {
-        method: methodName,
-        body: body,
-        headers: {
-            'content-type': "application/json; charset=UTF-8",
-            'authorization': "Bearar Token qwertyqaz"
+
+function makeFetchAPICall(methodName, url, body){
+    return fetch(url, {
+        method : methodName,
+        body : body,
+        headers : {
+            'content-type' : "application/json; charset=UTF-8",
+            'authorization' : "Bearar Token qwertyqaz"
         }
-    });
-    return await response.json();
+    }).then(response => response.json());
 }
 
+// async function makeFetchAPICall(methodName, url, body){
+//     const response = await fetch(url, {
+//         method: methodName,
+//         body: body,
+//         headers: {
+//             'content-type': "application/json; charset=UTF-8",
+//             'authorization': "Bearar Token qwertyqaz"
+//         }
+//     });
+//     return await response.json();
+// }
 
 
-// For GET Method
+// For GET Method //
+// ===============================GET Method============================= //
+
 
 async function getPost(){
+    try{
+        let responseData = await makeFetchAPICall("GET", baseURL);
+        postArray = responseData;
+        templating(postArray);
+    } catch(err){
+        cl(err);
+    }
     // fetch(baseURL)
     //     .then(response => response.json())
     //     .then(resp =>{
@@ -47,17 +58,13 @@ async function getPost(){
     //         templating(postArray);
     //     })
     //     .catch(err => cl(err));
-    try{
-        let responseData = await makeFetchAPICall("GET", baseURL);
-        postArray = responseData;
-        templating(postArray);
-    } catch(err){
-        cl(err);
-    }
 }
 getPost();
 
-// For POST method
+
+// For POST method //
+// ===============================POST Method============================= //
+
 
 async function onPostSubmitHandler(eve){
     eve.preventDefault();
@@ -78,7 +85,6 @@ async function onPostSubmitHandler(eve){
     } catch(err){
         cl(err);
     }
-
     // fetch(baseURL, {
     //     method : "POST",
     //     body : JSON.stringify(obj),
@@ -90,6 +96,9 @@ async function onPostSubmitHandler(eve){
     //   .then(data => cl(data))
     //   .catch(cl);
 }
+
+// For PATCH method
+// ===============================PATCH Method============================= //
 
 const onEditHandler = eve =>{
     // cl("Edited");
@@ -104,7 +113,6 @@ const onEditHandler = eve =>{
     update.classList.remove("d-none");
 }
 
-// For PATCH method
 
 async function onUpdateHandler(eve){
     let obj = {
@@ -133,20 +141,25 @@ async function onUpdateHandler(eve){
     }
 }
 
+// ===============================DELETE Method============================= //
 
-
-// const onDeleteHandler = eve =>{
-//     cl("Deleted")
-// }
 
 async function onDeleteHandler(eve){
     let deletedID = +eve.getAttribute('data-id');
-    let newPostArray = postArray.filter(obj => obj.id === deletedID);
+    let newPostArray = postArray.filter(obj => obj.id != deletedID);
     cl(newPostArray);
     templating(newPostArray);
     let deletedURL = `${baseURL}/${deletedID}`;
-    let responseData = await makeFetchAPICall("DELETE", deletedURL);
+    try{
+        let responseData = await makeFetchAPICall("DELETE", deletedURL);
+    }catch(err){
+        cl(err);
+    }
 }
+
+
+// ===============================Templating Function============================= //
+
 
 function templating(arr){
     let result = '';
@@ -166,7 +179,7 @@ function templating(arr){
     data.innerHTML = result;
 }
 
-// Event Listners //
+// ===============================Event Listners============================= //
 
 postForm.addEventListener("submit", onPostSubmitHandler);
 update.addEventListener("click", onUpdateHandler);
